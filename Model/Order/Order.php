@@ -2,12 +2,9 @@
 
 namespace Model\Order;
 
-class Order extends \Core\Component {
+class Order extends \Model\ModelBase {
 
     public $flipFields;
-    public $db;
-
-    const TABLE_NAME = 'orders';
 
     public static $fields = array(
         'id',
@@ -31,20 +28,12 @@ class Order extends \Core\Component {
         'is_deleted',
     );
 
-    public function getDb() {
-        return $this->db;
-    }
-    
     public function __construct() {
-        $this->db = \Core\DbConnection::instance()->getConnection('order');
+        parent::__construct();
         $this->flipFields = array_flip(self::$fields);
     }
-
-    public function insert($insertData){
-        return $this->db->insert(self::TABLE_NAME,$insertData);
-    }
     
-    public function select($columns,$condition,$other,$params) {
-        return $this->db->select($columns, self::TABLE_NAME, $condition, $other, $params);
+    public function getTableName(){
+        return 'orders';
     }
 }

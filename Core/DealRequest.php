@@ -1,10 +1,18 @@
 <?php
+/**
+ * class DealRequest
+ */
 
 namespace Core;
 
 class DealRequest {
     private static $_instance;
 
+    /**
+     * get a object of this class
+     * 
+     * @return \Core\DealRequest
+     */
     public static function instance() {
         if (!self::$_instance) {
             self::$_instance = new self;
@@ -14,6 +22,9 @@ class DealRequest {
         }
     }
     
+    /**
+     * start function.
+     */
     public function run() {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $route = trim($_GET['_rp_'],'/ ');
@@ -26,6 +37,14 @@ class DealRequest {
         }
     }
     
+    /**
+     * runController
+     * 
+     * @param string $route
+     * @param array  $params
+     * @return boolean
+     * @throws \Exception
+     */
     public function runController($route,$params) {
         if(preg_match('%^(?P<controller>\w+)\/(?P<action>\w+)$%', $route, $match)) {
             $controllerClass = '\\Controller\\' . $match['controller'];
@@ -37,7 +56,8 @@ class DealRequest {
                     if($method->getNumberOfParameters()>0) {
                         return $this->runActionWithParams($controller, $method, $params);
                     } else {
-                        return $controller->$action();
+                        $controller->$action();
+                        return true;
                     }
                 }
                 throw  new \Exception("method $action of $controllerClass not exists");
@@ -47,6 +67,15 @@ class DealRequest {
         throw new \Exception('route is invalid');
     }
     
+    /**
+     * run action with get params.
+     * 
+     * @param  \Core\ControllerBase | subclass $object
+     * @param \ReflectionMethod      $method
+     * @param array $params
+     * 
+     * @return boolean
+     */
     public function runActionWithParams($object, $method, $params) {
         $ps=array();
         foreach($method->getParameters() as $i=>$param)

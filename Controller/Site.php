@@ -17,8 +17,8 @@ class Site extends \Controller\ControllerBase {
     
     public function insertTest() {
         $data = array(
-            'order_sn' => 487454,
-            'order_id' => 62441,
+            'order_sn' => 48745214,
+            'order_id' => 6242241,
             'uid' => 1254,
             'quantity' => 2,
             'total_price' => 8.56,
@@ -37,7 +37,7 @@ class Site extends \Controller\ControllerBase {
             'is_deleted' => 0
         );
         print_r(array_values($data));
-        $count = \Model\ModelBase::instance()->insert(\Model\Order\Order::TABLE_NAME,array_keys($data),array_values($data));
+        $count = \Model\ModelBase::instance()->insert(\Model\Order\Order::TABLE_NAME,array_keys($data),$data);
         var_dump($count);
     }
     

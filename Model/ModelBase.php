@@ -1,4 +1,9 @@
 <?php
+/**
+ * class ModelBase.
+ * 
+ * @author cai mimeng<mimengc@163.com>
+ */
 
 namespace Model;
 
@@ -37,14 +42,14 @@ class ModelBase {
      * build select string sql struct.
      * 
      * @param string $columns   
-     * @param string $tableName
      * @param string $condition
      * @param string $other
      * @param string $params
      * 
      * @return array
      */
-    public function queryAll($columns, $tableName, $condition, $other, $params) {
+    public function queryAll($columns, $condition, $other, $params) {
+        $tableName = $this->getTableName();
         $sql = "select $columns from $tableName where $condition $other";
         return $this->db->queryRaw($sql, $params);
     }
@@ -52,15 +57,16 @@ class ModelBase {
     /**
      * construct insert data struct and execute.
      * 
-     * @param string $tableName
-     * @param array  $insertData 'key' is table field.
+     * @param array $insertField       array('order_id','uid'...).
+     * @param array $placeHolderValue  array(454,589). 
      * 
      * @return int｜false.
      */
-    public function insert($tableName,$inserField,$placeHolderValue) {
-        if (count($inserField) === count($placeHolderValue)) {
-            $values = array_fill_keys($inserField, self::PLACEHOLDER);
-            $columns = implode(',', $inserField);
+    public function insert($insertField,$placeHolderValue) {
+        if (count($insertField) === count($placeHolderValue)) {
+            $tableName = $this->getTableName();
+            $values = array_fill_keys($insertField, self::PLACEHOLDER);
+            $columns = implode(',', $insertField);
             $valueString = implode(',', $values);
             $sql = "insert into $tableName ($columns) values ($valueString)";
             return $this->db->executeRaw($sql, $placeHolderValue);
@@ -71,15 +77,15 @@ class ModelBase {
     /**
      * update.
      * 
-     * @param string $tableName
-     * @param string $condition
-     * @param array $updateField
-     * @param array $placeHolderValue
+     * @param string $condition        'id>? and status = ?'.
+     * @param array $updateField       array('order_id','uid','status').
+     * @param array $placeHolderValue  array(787979,25456,2,8,7).
      * 
      * @return int | false.
      */
-    public function update($tableName, $condition, $updateField, $placeHolderValue) {
+    public function update($condition, $updateField, $placeHolderValue) {
         if (substr_count($condition, self::PLACEHOLDER) + count($updateField) === count($placeHolderValue)) {
+            $tableName = $this->getTableName();
             $updateData = array_map(
                 function($v) {
                     return $v . '=' . self::PLACEHOLDER;
@@ -96,14 +102,13 @@ class ModelBase {
     /**
      * delete data.
      * 
-     * @param string $tableName
-     * @param string $condition
-     * 
-     * @param array $params
+     * @param string $condition  'id>? and status = ?'.
+     * @param array $params      array(47,2).
      * 
      * @return int | false.
      */
-    public function delete($tableName, $condition, $params) {
+    public function delete($condition, $params) {
+        $tableName = $this->getTableName();
         $sql = "delete from $tableName where $condition";
         return $this->db->executeRaw($sql, $params);
     }

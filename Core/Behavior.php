@@ -3,7 +3,7 @@
 /**
  * class behavior, used for extend an object. at the same time,observing the object event.
  * 
- * @author cai mimengc <mimengc@163.com>
+ * @author cai mimeng <mimengc@163.com>
  */
 namespace Core;
 

@@ -1,4 +1,8 @@
 <?php
+/**
+ * class RedisConnection
+ * @author cai mimeng <mimengc@163.com>
+ */
 
 namespace Core;
 
@@ -9,19 +13,32 @@ class RedisConnection {
     public $redisConfig;
     public $connection;
     
+    /**
+     * constrct function.
+     */
     public function __construct() {
         $this->redisConfig = new \Config\Redis();
     }
     
-   public static function instance() {
+    /**
+     * get the object of this class.
+     * 
+     * @return \Core\RedisConnection
+     */
+    public static function instance() {
         if (!self::$instance) {
             self::$instance = new static;
             return self::$instance;
         } else {
-            return self::instance;
+            return self::$instance;
         }
     }
-    
+    /**
+     * get or set the connection with config name.
+     * 
+     * @param string $name
+     * @return \Core\RedisConnection
+     */
     public function getConnection($name) {
         if (isset(self::$connections[$name])) {
             $this->connection = self::$connections[$name];
@@ -38,11 +55,25 @@ class RedisConnection {
         }
     }
     
+    /**
+     * set a value.
+     * 
+     * @param string $key
+     * @param string  $value
+     * 
+     * @return boolean
+     */
     public function set($key, $value) {
         return $this->connection->set($key,$value);
     }
     
+    /**
+     * get a value.
+     * 
+     * @param string $key
+     * @return string | false
+     */
     public function get($key) {
-        return $this->connection->get($key);
+       return $this->connection->get($key);
     }
 }

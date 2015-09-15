@@ -1,4 +1,9 @@
 <?php
+/**
+ * class businessException
+ * @author cai mimeng<mimengc@163.com> 
+ * 
+ */
 
 namespace Core;
 

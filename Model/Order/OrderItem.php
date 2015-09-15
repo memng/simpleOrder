@@ -2,7 +2,7 @@
 
 namespace Model\Order;
 
-class OrderItem extends \Core\Component {
+class OrderItem extends \Model\ModelBase{
     
     public static $fields = array(
         'id',
@@ -22,4 +22,8 @@ class OrderItem extends \Core\Component {
         'updated_at',
         'is_deleted'
     );
+    
+    public function getTableName() {
+        return 'order_items';
+    }
 }
