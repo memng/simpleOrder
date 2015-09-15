@@ -1,4 +1,7 @@
 <?php
+/**
+ * 
+ */
 
 namespace Core;
 
@@ -95,4 +98,39 @@ class DbConnection {
         return $statement->rowCount();
     }
     
+    /**
+     * begin transaction.
+     * 
+     * @return boolean
+     */
+    public function beginTransaction(){
+        return $this->connection->beginTransaction();
+    }
+    
+    /**
+     * transaction commit.
+     *  
+     * @return boolean
+     */
+    public function commit() {
+        return $this->connection->commit();
+    }
+    
+    /**
+     * transaction rollback.
+     * 
+     * @return boolean
+     */
+    public function rollBack() {
+        return $this->connection->rollBack();
+    }
+    
+    /**
+     * weather the connection in transaction.
+     * 
+     * @return boolean
+     */
+    public function inTransaction() {
+        return $this->connection->inTransaction();
+    }
 }

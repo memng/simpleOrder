@@ -112,4 +112,5 @@ class ModelBase {
         $sql = "delete from $tableName where $condition";
         return $this->db->executeRaw($sql, $params);
     }
+
 }
